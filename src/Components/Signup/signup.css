@@ -1,0 +1,21 @@
+#r1-signup{
+    
+    padding-top: 60px;
+}
+#img-colum-sign img{
+width: 750px;
+ height: 580px; 
+}
+.divv{
+    background-color: rgb(158, 157, 158);
+}
+div#img-colum-sign {
+    padding: unset;
+}
+#r3-vector img{
+    width: 150px;
+    margin-left: 170px;
+}
+div#form-colum-sign {
+    padding: 14px 15px !important;
+}
