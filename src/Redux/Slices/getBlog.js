@@ -26,11 +26,12 @@ export const getBlog = createSlice({
             state.isLoading = true
         })
         builder.addCase(getBlogApi.fulfilled,(state,action)=>{
+            state.data = action.payload.posts
             state.isLoading = false
             state.isError =false
-            state.data = action.payload.posts
         })
         builder.addCase(getBlogApi.rejected,(state,action)=>{
+            state.isLoading = false
             state.isError = true
         })
     }

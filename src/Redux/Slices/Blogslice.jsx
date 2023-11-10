@@ -25,8 +25,8 @@ export const blogdataslice = createSlice({
         state.loading = true;
       })
       .addCase(blogpost.fulfilled, (state, action) => {
-        state.loading = false;
         state.data=action.payload
+        state.loading = false;
       })
       .addCase(blogpost.rejected, (state, action) => {
         state.loading = false;

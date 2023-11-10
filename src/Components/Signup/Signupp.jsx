@@ -87,6 +87,7 @@ const Signupp = () => {
                     id="exampleInputPassword1"
                   />
                 </div>
+                {error.password && <p style={{color :'red'}}>{error.password}</p>}
                 <div class="mb-3">
                   <label for="confirmPassword" class="form-label">
                     Confirm Password
@@ -99,6 +100,7 @@ const Signupp = () => {
                     id="confirmPassword"
                   />
                 </div>
+                {error.confirmPassword && <p style={{color :'red'}}>{error.confirmPassword}</p>}
                 <button type="submit" class="btn btn-primary btn-signup">
                   Signup
                 </button>

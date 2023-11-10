@@ -26,8 +26,7 @@ export const getslicee = createSlice({
       .addCase(loginuser.pending, (state, action) => {
         state.isloading = true;
       })
-      .addCase(loginuser.fulfilled,(state, action) => {
-        state.isLoggedIn = true;
+      builder .addCase(loginuser.fulfilled,(state, action) => {
         state.data = action.payload;
         console.log(action.payload)
         state.authToken = action.payload.data.authToken;
@@ -35,11 +34,12 @@ export const getslicee = createSlice({
           "authToken",
           "Bearer" + " " + action.payload.data.authToken
         );
-    
+        state.isLoggedIn = true;
         state.isloading = false;
       })
-      .addCase(loginuser.rejected, (state, action) => {
+      builder .addCase(loginuser.rejected, (state, action) => {
         state.isloading = false;
+        state.isLoggedIn = false;
       });
   },
   reducers: {

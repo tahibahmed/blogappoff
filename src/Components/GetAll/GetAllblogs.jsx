@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getBlogApi } from "../../Redux/Slices/getBlog";
 import { deleteBlogApi } from "../../Redux/Slices/Delete";
@@ -6,26 +6,18 @@ import { useNavigate } from "react-router-dom";
 
 const GetAllblogs = () => {
   const dispatch = useDispatch();
- const navigate= useNavigate()
+
   const { data, loading } = useSelector((state) => state.getBlog);
-  const {isLoggedIn } = useSelector(state=>state.Userget)
-  console.log(isLoggedIn)
+  const {isLoggedIn} = useSelector(state=>state.Userget)
+
 
   const { isLoading } = useSelector((info) => info.deleteBlogss);
  
 
-  useEffect(() => {
-    // setTimeout(() => {
-    //   dispatch(getBlogApi());
-    // }, 1500);
-    if(isLoggedIn){
-      dispatch(getBlogApi())
-    }else if(!isLoggedIn){
-      dispatch(getBlogApi())
-    }else{
-      navigate('/login')
-    }
-  }, [isLoggedIn,isLoading]);
+  useEffect(()=>{
+    dispatch(getBlogApi());
+  },[isLoading,loading])
+
 
   return (
     <div>
