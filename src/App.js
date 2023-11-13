@@ -19,17 +19,17 @@ function App() {
     <>
       <BrowserRouter>
         <Routes>
-          {isLoggedIn ? (
-            <>
-              <Route path="/blogs" element={<Blogss />} />
-            </>
-          ) : (
-            <>
-              <Route path="/" element={<Signupp />} />
-              <Route path="/login" element={<Login />} />
-            </>
-          )}
-        </Routes>
+          {/* {isLoggedIn ? ( */}
+          {/* <> */}
+          <Route path="/blogs" element={<Blogss />} />
+          {/* </> */}
+          {/* ) : ( */}
+          {/* <>/ */}
+            <Route path="/" element={<Signupp />} />
+            <Route path="/login" element={<Login />} />
+            {/* </> */}
+            {/* )} */}
+          </Routes>
       </BrowserRouter>
     </>
   );
