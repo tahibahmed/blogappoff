@@ -4,29 +4,29 @@ import { getBlogApi } from "../../Redux/Slices/getBlog";
 import { deleteBlogApi } from "../../Redux/Slices/Delete";
 import { useNavigate } from "react-router-dom";
 
-const GetAllblogs = () => {
-  const dispatch = useDispatch();
+const GetAllblogs = ({ Blogs }) => {
+  // const dispatch = useDispatch();
 
-  const { data, loading } = useSelector((state) => state.getBlog);
-  const {isLoggedIn} = useSelector(state=>state.Userget)
+  // const { data, loading } = useSelector((state) => state.getBlog);
+  // const { isLoggedIn } = useSelector(state => state.Userget)
 
 
-  const { isLoading } = useSelector((info) => info.deleteBlogss);
- 
+  // const { isLoading } = useSelector((info) => info.deleteBlogss);
 
-  useEffect(()=>{
-    dispatch(getBlogApi());
-  },[isLoading,loading])
+
+  // useEffect(() => {
+  //   dispatch(getBlogApi());
+  // }, [isLoading, loading])
 
 
   return (
     <div>
-      {loading ? (
+      {/* {loading ? (
         <h1>Loading Please Wait...</h1>
-      ) : (
-        <div className="container">
-          <div className="row">
-            {data &&
+      ) : ( */}
+      <div className="container">
+        <div className="row">
+          {/* {data &&
               data.map((item) => (
                 <div
                   key={item._id}
@@ -68,10 +68,10 @@ const GetAllblogs = () => {
                     </div>
                   </div>
                 </div>
-              ))}
-          </div>
+              ))} */}
         </div>
-      )}
+      </div>
+      {/* )} */}
     </div>
   );
 };

@@ -5,25 +5,33 @@ import "./login.css";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
 import { loginuser } from "../../Redux/Slices/LoginSlice";
+import instance from "../../Instance/instance";
 
 
 const Login = () => {
-  const [userlogin, setuserlogin] = useState({});
+  const [input, setInput] = useState({});
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { authToken, isloading ,isLoggedIn} = useSelector((state) => state.Userget);
+  const { authToken, isloading, isLoggedIn } = useSelector((state) => state.Userget);
 
-  const getdataa = (e) => {
-    setuserlogin({ ...userlogin, [e.target.name]: e.target.value });
+  const handleChange = (e) => {
+    setInput({ ...input, [e.target.name]: e.target.value });
   };
-  const handlesubmit = (e) => {
+  const handlesubmit = async (e) => {
     e.preventDefault();
-    localStorage.setItem("authToken", authToken);
-    dispatch(loginuser(userlogin));
-    navigate("/blogs");
- 
+    try {
+      const response = await instance.post("user/login", input)
+      if (response?.data?.message === "Successful") {
+        console.log("login")
+        await localStorage.setItem("authToken", response?.data?.data?.authToken);
+        navigate("/blogs");
+      }
+    } catch (error) {
+      console.log(error?.response?.data?.message)
+    }
+    // dispatch(loginuser(input));
   };
-  
+
 
 
   return (
@@ -52,7 +60,7 @@ const Login = () => {
                     <input
                       type="email"
                       name="email"
-                      onChange={getdataa}
+                      onChange={handleChange}
                       className="form-control"
                       aria-describedby="emailHelp"
                     />
@@ -65,7 +73,7 @@ const Login = () => {
                     <input
                       type="password"
                       name="password"
-                      onChange={getdataa}
+                      onChange={handleChange}
                       className="form-control"
                     />
                   </div>

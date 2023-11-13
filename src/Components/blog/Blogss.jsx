@@ -4,53 +4,50 @@ import { blogpost } from "../../Redux/Slices/Blogslice";
 import GetAllblogs from "../GetAll/GetAllblogs";
 import { logout } from "../../Redux/Slices/LoginSlice";
 import { useNavigate } from "react-router-dom";
+import instance from "../../Instance/instance";
 
 const Blogss = () => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  const [crrentuser, setcurrent] = useState({
+  const [inputData, SetInputData] = useState({
     type: "",
     post: null,
     description: "",
   });
-  const { loading } = useSelector((state) => state.blogpost);
-  const handlechnage = (e) => {
+  const [Blogs, setBlogs] = useState([])
+  const handlechange = (e) => {
     if (e.target.name === "post") {
-      setcurrent({ ...crrentuser, post: e.target.files[0] });
+      SetInputData({ ...inputData, post: e.target.files[0] });
     } else {
-      setcurrent({ ...crrentuser, [e.target.name]: e.target.value });
+      SetInputData({ ...inputData, [e.target.name]: e.target.value });
     }
   };
   const logoutfunc = () => {
-    dispatch(logout());
+    localStorage?.removeItem("authToken")
     navigate("/login");
   };
+
+  const GetBlogs = async () => {
+    const response = await instance.get("post")
+    setBlogs(response?.data)
+  }
+  useEffect(() => {
+    GetBlogs()
+  }, [])
+
   const handlesubmit = async (e) => {
     e.preventDefault();
-    if (crrentuser.type && crrentuser.post && crrentuser.description) {
-      const formData = new FormData();
-      formData.append("type", crrentuser.type);
-      formData.append("post", crrentuser.post);
-      formData.append("description", crrentuser.description);
-  
-      await dispatch(blogpost(formData))
-      setcurrent({
-        type: "",
-        post: null,
-        description: "",
-      });
-    } else {
-      alert("Please fill in all the required fields.");
+    try {
+      if (inputData.type && inputData.post && inputData.description) {
+        const formData = new FormData();
+        formData.append("type", inputData?.type);
+        formData.append("post", inputData?.post);
+        formData.append("description", inputData?.description);
+        const response = await instance.post("/post", formData)
+        console.log(response, "response")
+      };
+    } catch (error) {
+      console.log(error)
     }
-  };
-
-  if (loading) {
-    return (
-      <div className=" position-absolute">
-        <h1>Loading Please Wait...</h1>
-      </div>
-    );
   }
   return (
     <div>
@@ -76,9 +73,9 @@ const Blogss = () => {
                     type="text"
                     className="form-control"
                     name="type"
-                    value={crrentuser.type}
+                    value={inputData.type}
                     onChange={(e) => {
-                      handlechnage(e);
+                      handlechange(e);
                     }}
                     placeholder="Post Here"
                     aria-describedby="emailHelp"
@@ -88,9 +85,9 @@ const Blogss = () => {
                   <input
                     type="text"
                     name="description"
-                    value={crrentuser.description}
+                    value={inputData.description}
                     onChange={(e) => {
-                      handlechnage(e);
+                      handlechange(e);
                     }}
                     className="form-control"
                     placeholder="Description"
@@ -102,7 +99,7 @@ const Blogss = () => {
                     type="file"
                     name="post"
                     onChange={(e) => {
-                      handlechnage(e);
+                      handlechange(e);
                     }}
                     id="formFileMultiple"
                   />
@@ -118,7 +115,7 @@ const Blogss = () => {
                 </button>
               </form>
             </div>
-            <GetAllblogs />
+            <GetAllblogs Blogs={Blogs} />
           </div>
         </div>
       </div>

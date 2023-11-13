@@ -7,24 +7,35 @@ import "./signup.css";
 import { useDispatch } from "react-redux";
 import { postdata } from "../../Redux/Slices/SignupSlice";
 import { NavLink, useNavigate } from "react-router-dom";
-import  Validation  from "./Validation";
+import Validation from "./Validation";
+import instance from "../../Instance/instance";
 
 const Signupp = () => {
-  const [users, setUsers] = useState({});
-  const [error, seterror] = useState({});
-  const dispatch = useDispatch();
+  const [input, setInput] = useState({});
+  // const [error, seterror] = useState({});
+  // const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const getdata = (e) => {
-    setUsers({ ...users, [e.target.name]: e.target.value });
+  const handleChange = (e) => {
+    setInput({ ...input, [e.target.name]: e.target.value });
   };
-  const handlesubmit = (e) => {
+  const handlesubmit = async (e) => {
     e.preventDefault();
-    dispatch(postdata(users));
-   seterror(Validation(users))
-    navigate("/login");
-    console.log("first");
-    console.log(users);
+    try {
+      const resposne = await instance.post("user", input)
+      console.log(resposne?.data?.message, "response")
+      if (resposne?.data?.message === "Signup Successful") {
+        console.log("Account Created")
+        navigate("/login");
+      }
+    } catch (error) {
+      console.log(error?.response?.data?.message)
+    }
+
+    // dispatch(postdata(input));
+    //  seterror(Validation(input))
+    // console.log("first");
+    // console.log(input);
   };
   return (
     <div className="divv">
@@ -51,13 +62,13 @@ const Signupp = () => {
                   <input
                     type="text"
                     name="name"
-                    onChange={getdata}
+                    onChange={handleChange}
                     class="form-control"
                     id="name"
                     aria-describedby="emailHelp"
                   />
                 </div>
-                {error.name && <p style={{color :'red'}}>{error.name}</p>}
+                {/* {error.name && <p style={{ color: 'red' }}>{error.name}</p>} */}
                 <div class="mb-3">
                   <label for="exampleInputEmail1" class="form-label">
                     Email address
@@ -65,7 +76,7 @@ const Signupp = () => {
                   <input
                     type="email"
                     name="email"
-                    onChange={getdata}
+                    onChange={handleChange}
                     class="form-control"
                     id="exampleInputEmail1"
                     aria-describedby="emailHelp"
@@ -74,7 +85,7 @@ const Signupp = () => {
                     We'll never share your email with anyone else.
                   </div>
                 </div>
-                {error.email && <p style={{color :'red'}}>{error.email}</p>}
+                {/* {error.email && <p style={{ color: 'red' }}>{error.email}</p>} */}
                 <div class="mb-3">
                   <label for="exampleInputPassword1" class="form-label">
                     Password
@@ -82,12 +93,12 @@ const Signupp = () => {
                   <input
                     type="password"
                     name="password"
-                    onChange={getdata}
+                    onChange={handleChange}
                     class="form-control"
                     id="exampleInputPassword1"
                   />
                 </div>
-                {error.password && <p style={{color :'red'}}>{error.password}</p>}
+                {/* {error.password && <p style={{ color: 'red' }}>{error.password}</p>} */}
                 <div class="mb-3">
                   <label for="confirmPassword" class="form-label">
                     Confirm Password
@@ -95,18 +106,18 @@ const Signupp = () => {
                   <input
                     type="password"
                     name="confirmPassword"
-                    onChange={getdata}
+                    onChange={handleChange}
                     class="form-control"
                     id="confirmPassword"
                   />
                 </div>
-                {error.confirmPassword && <p style={{color :'red'}}>{error.confirmPassword}</p>}
+                {/* {error.confirmPassword && <p style={{ color: 'red' }}>{error.confirmPassword}</p>} */}
                 <button type="submit" class="btn btn-primary btn-signup">
                   Signup
                 </button>
                 <button class="btn btn-info ">
                   {" "}
-                  <NavLink to={"/login"}></NavLink>LOgin
+                  <NavLink to={"/login"}>Login</NavLink>
                 </button>
               </form>
             </div>
